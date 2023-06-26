@@ -8,11 +8,11 @@ edition = "2021"
 [dependencies]
 cosmrs = "0.14.0"
 derive_more = { version = "0.99.17", default-features = false, features = ["from", "into", "display"] }
-ibc = { git = "https://github.com/cosmos/ibc-rs.git", rev = "4b540bc"}
-ibc-proto = { version = "=0.31.0", default-features = false, features = ["server"] }
+ibc = { git = "https://github.com/cosmos/ibc-rs.git", rev = "5d1855b2593b1235060b231f2abb4d9407a850cd"}
+ibc-proto = { version = "0.32", default-features = false, features = ["server"] }
 prost = { version = "0.11.6", default-features = false }
-tendermint = "=0.32.0"
-tendermint-proto = "=0.32.0"
+tendermint = "0.32.0"
+tendermint-proto = "0.32.0"
 tendermint-rpc = {version = "0.32.0", features = ["http-client"] }
 tonic = "0.9"
 anyhow = "1.0.71"

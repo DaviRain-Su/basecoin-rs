@@ -6,7 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ibc-proto = { version = "=0.31.0", default-features = false, features = ["server"] }
+ibc-proto = { version = "0.32", default-features = false, features = ["server"] }
 tonic = "0.9"
 tracing = "0.1.26"
 
