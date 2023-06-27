@@ -5,12 +5,12 @@ edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 [dependencies]
-thiserror = "1"
-ibc = { git = "https://github.com/cosmos/ibc-rs.git", rev = "5d1855b2593b1235060b231f2abb4d9407a850cd"}
-tendermint-proto = "0.32.0"
+thiserror = { workspace = true }
+ibc = {  workspace = true  }
+tendermint-proto = { workspace = true }
 
 [dev-dependencies]
-bytes = "1.0.1"
-lazy_static = "1.4.0"
-proptest = "*"
-rand = "*"
+bytes = { workspace = true }
+lazy_static = { workspace = true }
+proptest = { workspace = true }
+rand = { workspace = true }

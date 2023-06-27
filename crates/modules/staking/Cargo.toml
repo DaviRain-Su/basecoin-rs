@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ibc-proto = { version = "0.32", default-features = false, features = ["server"] }
-tonic = "0.9"
-tracing = "0.1.26"
+ibc-proto = { workspace = true, default-features = false, features = ["server"] }
+tonic = { workspace = true }
+tracing = { workspace = true }
 
 cosmos-sdk-rs-store = { version = "0.1", path = "../../store" }

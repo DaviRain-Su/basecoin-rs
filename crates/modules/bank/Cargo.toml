@@ -6,18 +6,18 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-cosmrs = "0.14.0"
-ibc-proto = { version = "0.32", default-features = false, features = ["server"] }
-prost = { version = "0.11.6", default-features = false }
-serde_json = "1.0"
-displaydoc = { version = "0.2", default-features = false }
-primitive-types = { version = "0.12.0", default-features = false, features = ["serde_no_std"] }
-tendermint = "0.32.0"
-tendermint-proto = "0.32.0"
-tonic = "0.9"
-anyhow = "1.0.71"
-tracing = "0.1.26"
-thiserror = "1"
+cosmrs = { workspace = true }
+ibc-proto = { workspace = true, default-features = false, features = ["server"] }
+prost = { workspace = true, default-features = false }
+serde_json = { workspace = true }
+displaydoc = { workspace = true, default-features = false }
+primitive-types = { workspace = true, default-features = false, features = ["serde_no_std"] }
+tendermint = { workspace = true }
+tendermint-proto = { workspace = true }
+tonic = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
 
 cosmos-sdk-rs-store = { version = "0.1", path = "../../store" }
 cosmos-sdk-rs-helper = { version = "0.1", path = "../../helper" }
