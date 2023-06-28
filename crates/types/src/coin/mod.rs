@@ -257,6 +257,48 @@ impl Sub for BaseCoin {
     }
 }
 
+// --------------------------------------------------
+
+/// Coins is a set of Coin, one per currency
+#[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+pub struct BaseCoins(pub Vec<BaseCoin>);
+
+impl From<Vec<BaseCoin>> for BaseCoins {
+    fn from(coins: Vec<BaseCoin>) -> Self {
+        Self(coins)
+    }
+}
+
+pub fn sanitize_coins(coins: Vec<BaseCoin>) -> BaseCoins {
+    let mut new_coins = remove_zero_coins(coins.into());
+    new_coins.sort();
+    new_coins
+}
+
+/// removeZeroCoins removes all zero coins from the given coin set in-place.
+pub fn remove_zero_coins(coins: BaseCoins) -> BaseCoins {
+    let mut non_zeros = Vec::with_capacity(coins.0.len());
+
+    for coin in coins.0 {
+        if !coin.is_zero() {
+            non_zeros.push(coin);
+        }
+    }
+
+    BaseCoins(non_zeros)
+}
+
+// Sort is a helper function to sort the set of coins in-place
+impl BaseCoins {
+    pub fn sort(&mut self) {
+        self.0.sort();
+    }
+
+    pub fn len(&self) -> usize {
+        self.0.len()
+    }
+}
+
 pub fn validate_denom(denom: &str) -> Result<(), Error> {
     let coin_denom_regex = default_coin_denom_regex();
     let matcher = Regex::new(&format!("^{}$", coin_denom_regex)).unwrap();
