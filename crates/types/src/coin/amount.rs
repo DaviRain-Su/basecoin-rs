@@ -27,6 +27,14 @@ impl Amount {
     pub fn is_zero(&self) -> bool {
         self.0.is_zero()
     }
+
+    pub fn zero() -> Self {
+        Self(U256::zero())
+    }
+
+    pub fn is_positive(&self) -> bool {
+        self.0 >= U256::zero()
+    }
 }
 
 impl AsRef<U256> for Amount {

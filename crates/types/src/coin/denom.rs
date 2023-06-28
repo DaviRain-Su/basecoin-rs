@@ -16,7 +16,7 @@ use crate::serializers::serde_string;
 ///
 /// For example, given the token `my_port-1/my_channel-1/my_port-2/my_channel-2/base_denom`,
 /// `base_denom` is the "base" of the denomination
-#[derive(Clone, Debug, Eq, PartialEq, PartialOrd, Ord, Display, Serialize, Deserialize)]
+#[derive(Clone, Debug, Eq, PartialEq, PartialOrd, Ord, Display, Serialize, Deserialize, Hash)]
 #[serde(transparent)]
 pub struct BaseDenom(pub String);
 

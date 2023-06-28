@@ -290,12 +290,178 @@ pub fn remove_zero_coins(coins: BaseCoins) -> BaseCoins {
 
 // Sort is a helper function to sort the set of coins in-place
 impl BaseCoins {
+    pub fn new(coins: Vec<BaseCoin>) -> Result<Self> {
+        let new_coins = sanitize_coins(coins);
+        new_coins.validate()?;
+        Ok(new_coins)
+    }
+
+    // Validate checks that the Coins are sorted, have positive amount, with a valid and unique
+    // denomination (i.e no duplicates). Otherwise, it returns an error.
+    pub fn validate(&self) -> Result<()> {
+        match self.0.len() {
+            0 => Ok(()),
+            1 => {
+                self.0[0].validate()?;
+                Ok(())
+            }
+            _ => {
+                let mut low_denom = self.0[0].denom.clone();
+
+                for coin in self.0.iter().skip(1) {
+                    coin.validate()?;
+                    if coin.denom < low_denom {
+                        return Err(anyhow::anyhow!("denomination is not sorted"));
+                    }
+                    if coin.denom == low_denom {
+                        return Err(anyhow::anyhow!("duplicate denomination"));
+                    }
+
+                    // we compare each coin against the last denom
+                    low_denom = coin.denom.clone();
+                }
+
+                Ok(())
+            }
+        }
+    }
+
     pub fn sort(&mut self) {
         self.0.sort();
     }
 
     pub fn len(&self) -> usize {
         self.0.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
+    }
+
+    pub fn is_sorted(&self) -> bool {
+        self.0.windows(2).all(|w| w[0] <= w[1])
+    }
+
+    pub fn is_valid(&self) -> bool {
+        self.validate().is_ok()
+    }
+
+    // Denoms returns all denoms associated with a Coins object
+    pub fn denoms(&self) -> Vec<String> {
+        self.0.iter().map(|c| c.denom.0.clone()).collect()
+    }
+
+    // safeAdd will perform addition of two coins sets. If both coin sets are
+    // empty, then an empty set is returned. If only a single set is empty, the
+    // other set is returned. Otherwise, the coins are compared in order of their
+    // denomination and addition only occurs when the denominations match, otherwise
+    // the coin is simply added to the sum assuming it's not zero.
+    // The function panics if `coins` or  `coinsB` are not sorted (ascending).
+    pub fn safe_add(&self, coins_b: &BaseCoins) -> BaseCoins {
+        if !self.is_sorted() {
+            panic!("Coins (self) must be sorted")
+        }
+        if !coins_b.is_sorted() {
+            panic!("Wrong argument: coins must be sorted")
+        }
+
+        let mut uniq_coins: std::collections::HashMap<BaseDenom, BaseCoin> =
+            std::collections::HashMap::with_capacity(self.len() + coins_b.len());
+
+        for coins in &[self, coins_b] {
+            for coin in coins.0.iter() {
+                if let Some(uc) = uniq_coins.get_mut(&coin.denom) {
+                    *uc = uc.clone().add(coin.clone());
+                } else {
+                    uniq_coins.insert(coin.denom.clone(), coin.clone());
+                }
+            }
+        }
+
+        let mut coalesced = Vec::with_capacity(uniq_coins.len());
+        for (_, c) in uniq_coins {
+            if c.is_zero() {
+                continue;
+            }
+            coalesced.push(c);
+        }
+
+        BaseCoins(coalesced)
+    }
+
+    // AmountOfNoDenomValidation returns the amount of a denom from coins
+    // without validating the denomination.
+    pub fn amount_of_no_denom_validation(&self, denom: &str) -> Amount {
+        if let Some(c) = self.find(denom) {
+            c.amount
+        } else {
+            Amount::zero()
+        }
+    }
+
+    // Find returns true and coin if the denom exists in coins. Otherwise it returns false
+    // and a zero coin. Uses binary search.
+    // CONTRACT: coins must be valid (sorted).
+    pub fn find(&self, denom: &str) -> Option<BaseCoin> {
+        match self.0.len() {
+            0 => None,
+            1 => {
+                if self.0[0].denom.0 == denom {
+                    Some(self.0[0].clone())
+                } else {
+                    None
+                }
+            }
+            _ => {
+                let mid_idx = self.0.len() / 2;
+                let coin = &self.0[mid_idx];
+                match denom.cmp(&coin.denom.0) {
+                    std::cmp::Ordering::Less => Vec::from(&self.0[..mid_idx])
+                        .into_iter()
+                        .find(|v| v.denom.0 == denom),
+                    std::cmp::Ordering::Equal => Some(coin.clone()),
+                    std::cmp::Ordering::Greater => Vec::from(&self.0[mid_idx + 1..])
+                        .into_iter()
+                        .find(|v| v.denom.0 == denom),
+                }
+            }
+        }
+    }
+
+    // GetDenomByIndex returns the Denom of the certain coin to make the findDup generic
+    pub fn get_denom_by_index(&self, i: usize) -> String {
+        self.0[i].denom.0.clone()
+    }
+
+    // IsAllPositive returns true if there is at least one coin and all currencies
+    // have a positive value.
+    pub fn is_all_positive(&self) -> bool {
+        if self.0.is_empty() {
+            return false;
+        }
+
+        for coin in self.0.iter() {
+            if !coin.amount.is_positive() {
+                return false;
+            }
+        }
+
+        true
+    }
+}
+
+impl std::ops::Add for BaseCoins {
+    type Output = BaseCoins;
+
+    fn add(self, other: BaseCoins) -> Self::Output {
+        self.safe_add(&other)
+    }
+}
+
+impl std::fmt::Display for BaseCoins {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let coins: Vec<String> = self.0.iter().map(|c| c.to_string()).collect();
+        write!(f, "{}", coins.join(","))
     }
 }
 
