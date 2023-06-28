@@ -201,7 +201,7 @@ impl BaseCoin {
         self.denom == other.denom && self.amount == other.amount
     }
 
-    /// AddAmount adds an amount to the Coin.
+    /// `add_amount` adds an amount to the Coin.
     pub fn add_amount(&self, amount: Amount) -> Self {
         Self {
             denom: self.denom.clone(),
@@ -275,7 +275,7 @@ pub fn sanitize_coins(coins: Vec<BaseCoin>) -> BaseCoins {
     new_coins
 }
 
-/// removeZeroCoins removes all zero coins from the given coin set in-place.
+/// `remove_zero_coins` removes all zero coins from the given coin set in-place.
 pub fn remove_zero_coins(coins: BaseCoins) -> BaseCoins {
     let mut non_zeros = Vec::with_capacity(coins.0.len());
 
@@ -296,7 +296,7 @@ impl BaseCoins {
         Ok(new_coins)
     }
 
-    // Validate checks that the Coins are sorted, have positive amount, with a valid and unique
+    // `validate` checks that the Coins are sorted, have positive amount, with a valid and unique
     // denomination (i.e no duplicates). Otherwise, it returns an error.
     pub fn validate(&self) -> Result<()> {
         match self.0.len() {
@@ -346,12 +346,12 @@ impl BaseCoins {
         self.validate().is_ok()
     }
 
-    // Denoms returns all denoms associated with a Coins object
+    // `denoms` returns all denoms associated with a Coins object
     pub fn denoms(&self) -> Vec<String> {
         self.0.iter().map(|c| c.denom.0.clone()).collect()
     }
 
-    // safeAdd will perform addition of two coins sets. If both coin sets are
+    // `safe_add` will perform addition of two coins sets. If both coin sets are
     // empty, then an empty set is returned. If only a single set is empty, the
     // other set is returned. Otherwise, the coins are compared in order of their
     // denomination and addition only occurs when the denominations match, otherwise
@@ -389,7 +389,7 @@ impl BaseCoins {
         BaseCoins(coalesced)
     }
 
-    // AmountOfNoDenomValidation returns the amount of a denom from coins
+    // `amount_of_no_denom_validation` returns the amount of a denom from coins
     // without validating the denomination.
     pub fn amount_of_no_denom_validation(&self, denom: &str) -> Amount {
         if let Some(c) = self.find(denom) {
@@ -399,7 +399,13 @@ impl BaseCoins {
         }
     }
 
-    // Find returns true and coin if the denom exists in coins. Otherwise it returns false
+    // `amount_of` returns the amount of a denom from coins
+    pub fn amount_of(&self, denom: &str) -> Amount {
+        validate_denom(denom).expect("invalid denom");
+        self.amount_of_no_denom_validation(denom)
+    }
+
+    // `find` returns true and coin if the denom exists in coins. Otherwise it returns false
     // and a zero coin. Uses binary search.
     // CONTRACT: coins must be valid (sorted).
     pub fn find(&self, denom: &str) -> Option<BaseCoin> {
@@ -428,12 +434,12 @@ impl BaseCoins {
         }
     }
 
-    // GetDenomByIndex returns the Denom of the certain coin to make the findDup generic
+    // `get_denom_by_index` returns the Denom of the certain coin to make the findDup generic
     pub fn get_denom_by_index(&self, i: usize) -> String {
         self.0[i].denom.0.clone()
     }
 
-    // IsAllPositive returns true if there is at least one coin and all currencies
+    // `is_all_positive` returns true if there is at least one coin and all currencies
     // have a positive value.
     pub fn is_all_positive(&self) -> bool {
         if self.0.is_empty() {

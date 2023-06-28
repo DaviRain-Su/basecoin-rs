@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 ibc = { workspace = true }
 ibc-proto = { workspace = true, default-features = false, features = ["server"] }
-serde = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
 serde_derive = { workspace = true }
 anyhow = { workspace = true }
 thiserror = { workspace = true }
