@@ -1,5 +1,8 @@
-# basecoin-rs
-A rudimentary Tendermint ABCI application that implements the following functionality in the form of modules - 
+# Cosmos SDK implement by Rust
+
+[Cosmos SDK docs](https://docs.cosmos.network/v0.47)
+
+A rudimentary Tendermint ABCI application that implements the following functionality in the form of modules -
 * `bank` - keeps track of different accounts' balances and facilitates transactions between those accounts.
 * `ibc` - enables support for IBC (clients, connections & channels)
 
