@@ -5,7 +5,7 @@ use derive_more::{Display, From, Into};
 use primitive_types::U256;
 use serde::{Deserialize, Serialize};
 use std::{
-    ops::{Add, Sub},
+    ops::{Add, Div, Mul, Sub},
     str::FromStr,
 };
 
@@ -56,6 +56,22 @@ impl Sub for Amount {
 
     fn sub(self, rhs: Self) -> Self::Output {
         Self(self.0 - rhs.0)
+    }
+}
+
+impl Mul<u64> for Amount {
+    type Output = Self;
+
+    fn mul(self, rhs: u64) -> Self::Output {
+        Self(self.0 * <u64 as Into<u64>>::into(rhs))
+    }
+}
+
+impl Div<u64> for Amount {
+    type Output = Self;
+
+    fn div(self, rhs: u64) -> Self::Output {
+        Self(self.0 / <u64 as Into<u64>>::into(rhs))
     }
 }
 
