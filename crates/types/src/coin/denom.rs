@@ -18,7 +18,7 @@ use crate::serializers::serde_string;
 /// `base_denom` is the "base" of the denomination
 #[derive(Clone, Debug, Eq, PartialEq, PartialOrd, Ord, Display, Serialize, Deserialize)]
 #[serde(transparent)]
-pub struct BaseDenom(String);
+pub struct BaseDenom(pub String);
 
 impl BaseDenom {
     pub fn as_str(&self) -> &str {

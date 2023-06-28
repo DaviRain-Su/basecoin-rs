@@ -38,6 +38,9 @@ pub enum Error {
 
     #[error("infalible")]
     Infalible(std::convert::Infallible),
+
+    #[error("invalid coin denom: `{left}`, `{right}`")]
+    InvalidCoinDenom { left: String, right: String },
 }
 
 impl From<std::convert::Infallible> for Error {

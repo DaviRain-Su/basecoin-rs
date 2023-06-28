@@ -9,10 +9,13 @@ use ibc_proto::protobuf::Protobuf;
 use safe_regex::regex;
 use serde_derive::{Deserialize, Serialize};
 use std::fmt::{Display, Error as FmtError, Formatter};
+use std::ops::{Add, Index, Sub};
 use std::str::{from_utf8, FromStr};
 
 use crate::coin::amount::Amount;
 use crate::coin::denom::{BaseDenom, PrefixedDenom};
+use crate::serializers::serde_string;
+use regex::Regex;
 
 pub mod amount;
 pub mod denom;
@@ -31,7 +34,7 @@ pub struct Coin<D> {
     /// Denomination
     pub denom: D,
     /// Amount
-    #[cfg_attr(feature = "serde", serde(with = "serde_string"))]
+    #[serde(with = "serde_string")]
     pub amount: Amount,
 }
 
@@ -125,6 +128,154 @@ impl From<BaseCoin> for Any {
     }
 }
 
+impl BaseCoin {
+    pub fn new(denom: String, amount: u64) -> Result<Self> {
+        let coin = Self {
+            denom: BaseDenom::from_str(denom.as_str())?,
+            amount: amount.into(),
+        };
+
+        coin.validate()?;
+
+        Ok(coin)
+    }
+
+    /// `validate` returns an error if the Coin has a negative amount or if
+    /// the denom is invalid.
+    fn validate(&self) -> Result<()> {
+        validate_denom(self.denom.as_str())?;
+        Ok(())
+    }
+
+    /// `is_valid` returns true if the Coin has a non-negative amount and the denom is valid.
+    pub fn is_valid(&self) -> bool {
+        self.validate().is_ok()
+    }
+
+    /// `is_zero` returns if this represents no money
+    pub fn is_zero(&self) -> bool {
+        self.amount.is_zero()
+    }
+
+    // `is_gte` returns true if they are the same type and the receiver is
+    // an equal or greater value
+    pub fn is_gte(&self, other: BaseCoin) -> bool {
+        if self.denom != other.denom {
+            panic!(
+                "invalid coin denominations; {} != {}",
+                self.denom, other.denom
+            );
+        }
+
+        !self.amount.lt(&other.amount)
+    }
+
+    // `is_lt` returns true if they are the same type and the receiver is
+    // a smaller value
+    pub fn is_lt(&self, other: BaseCoin) -> bool {
+        if self.denom != other.denom {
+            panic!(
+                "invalid coin denominations; {} != {}",
+                self.denom, other.denom
+            );
+        }
+
+        self.amount.lt(&other.amount)
+    }
+    // `is_lte` returns true if they are the same type and the receiver is
+    // an equal or smaller value
+    pub fn is_lte(&self, other: BaseCoin) -> bool {
+        if self.denom != other.denom {
+            panic!(
+                "invalid coin denominations; {} != {}",
+                self.denom, other.denom
+            );
+        }
+
+        !self.amount.gt(&other.amount)
+    }
+
+    // `is_equal` returns true if the two sets of Coins have the same value
+    // Deprecated: Use Coin.Equal instead.
+    pub fn is_equal(&self, other: BaseCoin) -> bool {
+        self.denom == other.denom && self.amount == other.amount
+    }
+
+    /// AddAmount adds an amount to the Coin.
+    pub fn add_amount(&self, amount: Amount) -> Self {
+        Self {
+            denom: self.denom.clone(),
+            amount: self.amount.add(amount),
+        }
+    }
+
+    /// `sub_amount` subtracts an amount from the Coin.
+    pub fn sub_amount(&self, amount: Amount) -> Self {
+        Self {
+            denom: self.denom.clone(),
+            amount: self.amount.sub(amount),
+        }
+    }
+}
+
+/// `add` adds amounts of two coins with same denom. If the coins differ in denom then
+/// it panics.
+impl Add for BaseCoin {
+    type Output = Self;
+
+    fn add(self, other: Self) -> Self {
+        if self.denom != other.denom {
+            panic!(
+                "invalid coin denominations; {} != {}",
+                self.denom, other.denom
+            );
+        }
+
+        Self {
+            denom: self.denom,
+            amount: self.amount.add(other.amount),
+        }
+    }
+}
+
+/// Sub subtracts amounts of two coins with same denom and panics on error.
+impl Sub for BaseCoin {
+    type Output = Self;
+
+    fn sub(self, other: Self) -> Self {
+        if self.denom != other.denom {
+            panic!(
+                "invalid coin denominations; {} != {}",
+                self.denom, other.denom
+            );
+        }
+
+        Self {
+            denom: self.denom,
+            amount: self.amount.sub(other.amount),
+        }
+    }
+}
+
+pub fn validate_denom(denom: &str) -> Result<(), Error> {
+    let coin_denom_regex = default_coin_denom_regex();
+    let matcher = Regex::new(&format!("^{}$", coin_denom_regex)).unwrap();
+
+    if let Some(captures) = matcher.captures(denom) {
+        tracing::info!("captures = {:?}", captures.index(0));
+    } else {
+        return Err(Error::InvalidCoin {
+            coin: denom.to_string(),
+        });
+    }
+
+    Ok(())
+}
+
+fn default_coin_denom_regex() -> String {
+    String::from(r"[a-zA-Z][a-zA-Z0-9/:._-]{2,127}")
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -175,6 +326,14 @@ mod tests {
             assert_eq!(coins[2].amount, 999u64.into());
         }
 
+        Ok(())
+    }
+
+    #[test]
+    fn test_valid_denom() -> Result<()> {
+        let base_coin = BaseCoin::new("stake".into(), 23)?;
+        assert_eq!(base_coin.denom.as_str(), "stake");
+        println!("base coin: {:?}", base_coin);
         Ok(())
     }
 }

@@ -16,5 +16,7 @@ safe-regex = { workspace = true }
 derive_more = { workspace = true }
 primitive-types = { workspace = true }
 subtle-encoding = { workspace = true }
+regex = { workspace = true }
+tracing = { workspace = true }
 
 [features]

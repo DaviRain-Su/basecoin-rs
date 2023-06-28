@@ -4,7 +4,10 @@ use crate::errors::Error;
 use derive_more::{Display, From, Into};
 use primitive_types::U256;
 use serde::{Deserialize, Serialize};
-use std::str::FromStr;
+use std::{
+    ops::{Add, Sub},
+    str::FromStr,
+};
 
 /// A type for representing token transfer amounts.
 #[derive(
@@ -20,11 +23,31 @@ impl Amount {
     pub fn checked_sub(self, rhs: Self) -> Option<Self> {
         self.0.checked_sub(rhs.0).map(Self)
     }
+
+    pub fn is_zero(&self) -> bool {
+        self.0.is_zero()
+    }
 }
 
 impl AsRef<U256> for Amount {
     fn as_ref(&self) -> &U256 {
         &self.0
+    }
+}
+
+impl Add for Amount {
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self::Output {
+        Self(self.0 + rhs.0)
+    }
+}
+
+impl Sub for Amount {
+    type Output = Self;
+
+    fn sub(self, rhs: Self) -> Self::Output {
+        Self(self.0 - rhs.0)
     }
 }
 
