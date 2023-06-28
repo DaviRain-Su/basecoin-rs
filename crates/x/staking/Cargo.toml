@@ -1,0 +1,13 @@
+[package]
+name = "cosmos-x-staking"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ibc-proto = { workspace = true, default-features = false, features = ["server"] }
+tonic = { workspace = true }
+tracing = { workspace = true }
+
+cosmos-sdk-rs-store = { version = "0.1", path = "../../store" }

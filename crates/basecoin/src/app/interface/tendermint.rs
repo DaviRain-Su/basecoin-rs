@@ -26,11 +26,11 @@ use tendermint_proto::crypto::ProofOp;
 use tendermint_proto::crypto::ProofOps;
 
 use crate::app::BaseCoinApp;
-use cosmos_sdk_rs_auth::account::ACCOUNT_PREFIX;
 use cosmos_sdk_rs_helper::macros::ResponseFromErrorExt;
 use cosmos_sdk_rs_helper::{Height, Path};
-use cosmos_sdk_rs_module_api::types::IdentifiedModule;
 use cosmos_sdk_rs_store::{ProvableStore, Store};
+use cosmos_x_auth::account::ACCOUNT_PREFIX;
+use cosmos_x_module_api::types::IdentifiedModule;
 
 impl<S: Default + ProvableStore + 'static> Application for BaseCoinApp<S> {
     fn info(&self, request: RequestInfo) -> ResponseInfo {

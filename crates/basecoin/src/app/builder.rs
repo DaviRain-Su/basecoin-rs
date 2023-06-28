@@ -7,11 +7,11 @@ use ibc_proto::google::protobuf::Any;
 use tendermint_proto::abci::Event;
 
 use cosmos_sdk_rs_helper::Identifier;
-use cosmos_sdk_rs_module_api::types::IdentifiedModule;
-use cosmos_sdk_rs_module_api::types::ModuleList;
-use cosmos_sdk_rs_module_api::types::ModuleStore;
+use cosmos_x_module_api::types::IdentifiedModule;
+use cosmos_x_module_api::types::ModuleList;
+use cosmos_x_module_api::types::ModuleStore;
 
-use cosmos_sdk_rs_module_api::module::Module;
+use cosmos_x_module_api::module::Module;
 
 use cosmos_sdk_rs_store::{MainStore, ProvableStore, RevertibleStore, SharedRw, SharedStore};
 

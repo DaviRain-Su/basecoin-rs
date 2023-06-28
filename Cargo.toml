@@ -3,15 +3,16 @@ members = [
     "crates/basecoin",
     "crates/config",
     "crates/helper",
-    "crates/modules/auth",
-    "crates/modules/bank",
-    "crates/modules/bank/bank-type",
-    "crates/modules/gov",
-    "crates/modules/ibc",
-    "crates/modules/module-api",
-    "crates/modules/staking",
-    "crates/modules/upgrade",
     "crates/store",
+    # x SDK modules
+    "crates/x/auth",
+    "crates/x/bank",
+    "crates/x/bank/bank-type",
+    "crates/x/gov",
+    "crates/x/ibc",
+    "crates/x/module-api",
+    "crates/x/staking",
+    "crates/x/upgrade",
 ]
 
 resolver = "2"

@@ -42,14 +42,14 @@ tower = { workspace = true, features = ["full"], optional = true }
 cosmos-sdk-rs-store = { version = "0.1", path = "../store" }
 cosmos-sdk-rs-config = { version = "0.1", path = "../config" }
 cosmos-sdk-rs-helper = { version = "0.1", path = "../helper" }
-cosmos-sdk-rs-auth = { version = "0.1", path = "../modules/auth" }
-cosmos-sdk-rs-bank = { version = "0.1", path = "../modules/bank" }
-cosmos-sdk-rs-bank-type = { version = "0.1", path = "../modules/bank/bank-type" }
-cosmos-sdk-rs-gov = { version = "0.1", path = "../modules/gov" }
-cosmos-sdk-rs-ibc = { version = "0.1", path = "../modules/ibc" }
-cosmos-sdk-rs-module-api = { version = "0.1", path = "../modules/module-api" }
-cosmos-sdk-rs-staking = { version = "0.1", path = "../modules/staking" }
-cosmos-sdk-rs-upgrade = { version = "0.1", path = "../modules/upgrade" }
+cosmos-x-auth = { version = "0.1", path = "../x/auth" }
+cosmos-x-bank = { version = "0.1", path = "../x/bank" }
+cosmos-x-bank-type = { version = "0.1", path = "../x/bank/bank-type" }
+cosmos-x-gov = { version = "0.1", path = "../x/gov" }
+cosmos-x-ibc = { version = "0.1", path = "../x/ibc" }
+cosmos-x-module-api = { version = "0.1", path = "../x/module-api" }
+cosmos-x-staking = { version = "0.1", path = "../x/staking" }
+cosmos-x-upgrade = { version = "0.1", path = "../x/upgrade" }
 
 [dev-dependencies]
 bytes = { workspace = true }

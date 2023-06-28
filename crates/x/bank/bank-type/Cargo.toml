@@ -1,0 +1,13 @@
+[package]
+name = "cosmos-x-bank-type"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cosmrs = { workspace = true }
+serde = {  workspace = true  }
+primitive-types = { workspace = true, default-features = false, features = ["serde_no_std"] }
+ibc-proto = { workspace = true, default-features = false, features = ["server"] }
+cosmos-sdk-rs-helper = { version = "0.1", path = "../../../helper" }

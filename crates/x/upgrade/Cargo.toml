@@ -1,0 +1,25 @@
+[package]
+name = "cosmos-x-upgrade"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cosmrs = { workspace = true }
+derive_more = { workspace = true, default-features = false, features = ["from", "into", "display"] }
+ibc = {  workspace = true }
+ibc-proto = { workspace = true, default-features = false, features = ["server"] }
+prost = { workspace = true, default-features = false }
+tendermint = { workspace = true }
+tendermint-proto = { workspace = true}
+tendermint-rpc = { workspace = true, features = ["http-client"] }
+tonic = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+
+cosmos-sdk-rs-store = { version = "0.1", path = "../../store" }
+cosmos-sdk-rs-helper = { version = "0.1", path = "../../helper" }
+cosmos-x-module-api = { version = "0.1", path = "../module-api" }
+cosmos-sdk-rs-config = { version = "0.1", path = "../../config" }

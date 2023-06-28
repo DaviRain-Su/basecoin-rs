@@ -1,0 +1,25 @@
+[package]
+name = "cosmos-x-ibc"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+cosmrs = { workspace = true }
+ibc = { workspace = true }
+ibc-proto = { workspace = true, default-features = false, features = ["server"] }
+prost = { workspace = true,  default-features = false }
+tendermint = { workspace = true }
+tendermint-proto = { workspace = true }
+tonic = { workspace = true }
+anyhow = { workspace = true }
+tracing = { workspace = true }
+thiserror = { workspace = true }
+
+cosmos-sdk-rs-store = { version = "0.1", path = "../../store" }
+cosmos-sdk-rs-helper = { version = "0.1", path = "../../helper" }
+cosmos-x-module-api = { version = "0.1", path = "../module-api" }
+cosmos-x-bank-type = { version = "0.1", path = "../bank/bank-type" }
+cosmos-x-auth = { version = "0.1", path = "../auth" }
+cosmos-x-bank = { version = "0.1", path = "../bank" }

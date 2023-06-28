@@ -156,17 +156,17 @@ dependencies = [
  "anyhow",
  "bytes",
  "clap",
- "cosmos-sdk-rs-auth",
- "cosmos-sdk-rs-bank",
- "cosmos-sdk-rs-bank-type",
  "cosmos-sdk-rs-config",
- "cosmos-sdk-rs-gov",
  "cosmos-sdk-rs-helper",
- "cosmos-sdk-rs-ibc",
- "cosmos-sdk-rs-module-api",
- "cosmos-sdk-rs-staking",
  "cosmos-sdk-rs-store",
- "cosmos-sdk-rs-upgrade",
+ "cosmos-x-auth",
+ "cosmos-x-bank",
+ "cosmos-x-bank-type",
+ "cosmos-x-gov",
+ "cosmos-x-ibc",
+ "cosmos-x-module-api",
+ "cosmos-x-staking",
+ "cosmos-x-upgrade",
  "cosmrs",
  "ibc",
  "ibc-proto",
@@ -386,61 +386,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "cosmos-sdk-rs-auth"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cosmos-sdk-rs-bank-type",
- "cosmos-sdk-rs-helper",
- "cosmos-sdk-rs-module-api",
- "cosmos-sdk-rs-store",
- "cosmrs",
- "ibc-proto",
- "prost",
- "serde",
- "serde_derive",
- "serde_json",
- "tendermint-proto",
- "thiserror",
- "tonic",
- "tracing",
-]
-
-[[package]]
-name = "cosmos-sdk-rs-bank"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cosmos-sdk-rs-auth",
- "cosmos-sdk-rs-bank-type",
- "cosmos-sdk-rs-helper",
- "cosmos-sdk-rs-module-api",
- "cosmos-sdk-rs-store",
- "cosmrs",
- "displaydoc",
- "ibc-proto",
- "primitive-types",
- "prost",
- "serde_json",
- "tendermint",
- "tendermint-proto",
- "thiserror",
- "tonic",
- "tracing",
-]
-
-[[package]]
-name = "cosmos-sdk-rs-bank-type"
-version = "0.1.0"
-dependencies = [
- "cosmos-sdk-rs-helper",
- "cosmrs",
- "ibc-proto",
- "primitive-types",
- "serde",
-]
-
-[[package]]
 name = "cosmos-sdk-rs-config"
 version = "0.1.0"
 dependencies = [
@@ -450,27 +395,6 @@ dependencies = [
  "tendermint-rpc",
  "toml 0.7.5",
  "tracing-subscriber",
-]
-
-[[package]]
-name = "cosmos-sdk-rs-gov"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cosmos-sdk-rs-bank-type",
- "cosmos-sdk-rs-helper",
- "cosmos-sdk-rs-module-api",
- "cosmos-sdk-rs-store",
- "cosmos-sdk-rs-upgrade",
- "cosmrs",
- "derive_more",
- "ibc",
- "ibc-proto",
- "tendermint",
- "tendermint-proto",
- "thiserror",
- "tonic",
- "tracing",
 ]
 
 [[package]]
@@ -484,53 +408,6 @@ dependencies = [
  "rand",
  "tendermint-proto",
  "thiserror",
-]
-
-[[package]]
-name = "cosmos-sdk-rs-ibc"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cosmos-sdk-rs-auth",
- "cosmos-sdk-rs-bank",
- "cosmos-sdk-rs-bank-type",
- "cosmos-sdk-rs-helper",
- "cosmos-sdk-rs-module-api",
- "cosmos-sdk-rs-store",
- "cosmrs",
- "ibc",
- "ibc-proto",
- "prost",
- "tendermint",
- "tendermint-proto",
- "thiserror",
- "tonic",
- "tracing",
-]
-
-[[package]]
-name = "cosmos-sdk-rs-module-api"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "cosmos-sdk-rs-helper",
- "cosmos-sdk-rs-store",
- "cosmrs",
- "ibc-proto",
- "serde_json",
- "tendermint",
- "tendermint-proto",
- "thiserror",
-]
-
-[[package]]
-name = "cosmos-sdk-rs-staking"
-version = "0.1.0"
-dependencies = [
- "cosmos-sdk-rs-store",
- "ibc-proto",
- "tonic",
- "tracing",
 ]
 
 [[package]]
@@ -552,14 +429,137 @@ dependencies = [
 ]
 
 [[package]]
-name = "cosmos-sdk-rs-upgrade"
+name = "cosmos-x-auth"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cosmos-sdk-rs-helper",
+ "cosmos-sdk-rs-store",
+ "cosmos-x-bank-type",
+ "cosmos-x-module-api",
+ "cosmrs",
+ "ibc-proto",
+ "prost",
+ "serde",
+ "serde_derive",
+ "serde_json",
+ "tendermint-proto",
+ "thiserror",
+ "tonic",
+ "tracing",
+]
+
+[[package]]
+name = "cosmos-x-bank"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cosmos-sdk-rs-helper",
+ "cosmos-sdk-rs-store",
+ "cosmos-x-auth",
+ "cosmos-x-bank-type",
+ "cosmos-x-module-api",
+ "cosmrs",
+ "displaydoc",
+ "ibc-proto",
+ "primitive-types",
+ "prost",
+ "serde_json",
+ "tendermint",
+ "tendermint-proto",
+ "thiserror",
+ "tonic",
+ "tracing",
+]
+
+[[package]]
+name = "cosmos-x-bank-type"
+version = "0.1.0"
+dependencies = [
+ "cosmos-sdk-rs-helper",
+ "cosmrs",
+ "ibc-proto",
+ "primitive-types",
+ "serde",
+]
+
+[[package]]
+name = "cosmos-x-gov"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cosmos-sdk-rs-helper",
+ "cosmos-sdk-rs-store",
+ "cosmos-x-bank-type",
+ "cosmos-x-module-api",
+ "cosmos-x-upgrade",
+ "cosmrs",
+ "derive_more",
+ "ibc",
+ "ibc-proto",
+ "tendermint",
+ "tendermint-proto",
+ "thiserror",
+ "tonic",
+ "tracing",
+]
+
+[[package]]
+name = "cosmos-x-ibc"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cosmos-sdk-rs-helper",
+ "cosmos-sdk-rs-store",
+ "cosmos-x-auth",
+ "cosmos-x-bank",
+ "cosmos-x-bank-type",
+ "cosmos-x-module-api",
+ "cosmrs",
+ "ibc",
+ "ibc-proto",
+ "prost",
+ "tendermint",
+ "tendermint-proto",
+ "thiserror",
+ "tonic",
+ "tracing",
+]
+
+[[package]]
+name = "cosmos-x-module-api"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "cosmos-sdk-rs-helper",
+ "cosmos-sdk-rs-store",
+ "cosmrs",
+ "ibc-proto",
+ "serde_json",
+ "tendermint",
+ "tendermint-proto",
+ "thiserror",
+]
+
+[[package]]
+name = "cosmos-x-staking"
+version = "0.1.0"
+dependencies = [
+ "cosmos-sdk-rs-store",
+ "ibc-proto",
+ "tonic",
+ "tracing",
+]
+
+[[package]]
+name = "cosmos-x-upgrade"
 version = "0.1.0"
 dependencies = [
  "anyhow",
  "cosmos-sdk-rs-config",
  "cosmos-sdk-rs-helper",
- "cosmos-sdk-rs-module-api",
  "cosmos-sdk-rs-store",
+ "cosmos-x-module-api",
  "cosmrs",
  "derive_more",
  "ibc",
