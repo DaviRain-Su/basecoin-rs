@@ -7,6 +7,9 @@ use prost::Message;
 
 use super::context::Account;
 
+pub mod base_account;
+pub mod module_account;
+
 /// Address of the account that the relayer uses to sign basecoin transactions.
 /// This is hardcoded as we don't verify signatures currently.
 pub const RELAYER_ACCOUNT: &str = "cosmos12xpmzmfpf7tn57xg93rne2hc2q26lcfql5efws";

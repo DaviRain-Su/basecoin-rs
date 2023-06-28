@@ -8,6 +8,8 @@ edition = "2021"
 cosmrs = { workspace = true }
 ibc-proto = { workspace = true, default-features = false, features = ["server"] }
 prost = { workspace = true, default-features = false }
+serde = { workspace = true }
+serde_derive = { workspace = true }
 serde_json = { workspace = true }
 tendermint-proto = { workspace = true }
 tonic = { workspace = true }

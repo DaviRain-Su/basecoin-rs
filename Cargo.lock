@@ -397,6 +397,8 @@ dependencies = [
  "cosmrs",
  "ibc-proto",
  "prost",
+ "serde",
+ "serde_derive",
  "serde_json",
  "tendermint-proto",
  "thiserror",
