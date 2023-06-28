@@ -54,3 +54,42 @@ pub trait AccountKeeper {
 
     fn remove_account(&mut self, account: Self::Account) -> Result<(), Self::Error>;
 }
+
+// AccountKeeperI is the interface contract that x/auth's keeper implements.
+pub trait AccountKepperI: cosmos_x_module_api::CosmosSdkContext {
+    type Account: AccountI;
+    type PubKey: std::fmt::Display;
+    type Error;
+
+    /// Return a new account with the next account number and the specified address. Does not save the new account to the store.
+    fn new_account_with_address(&mut self, address: Self::AccAddress) -> Self::Account;
+
+    /// Return a new account with the next account number. Does not save the new account to the store.
+    fn new_account(&mut self, account: Self::Account) -> Self::Account;
+
+    /// Check if an account exists in the store.
+    fn has_account(&self, address: Self::AccAddress) -> bool;
+
+    /// Retrieve an account from the store.
+    fn get_account(&self, address: Self::AccAddress) -> Option<Self::Account>;
+
+    /// Set an account in the store.
+    fn set_account(&mut self, account: Self::Account);
+
+    /// Remove an account from the store.
+    fn remove_account(&mut self, account: Self::Account);
+
+    /// Iterate over all accounts, calling the provided function. Stop iteration when it returns true.
+    fn iterate_accounts<F>(&self, f: F) -> Result<(), Self::Error>
+    where
+        F: FnMut(&Self::Account) -> bool;
+
+    /// Fetch the public key of an account at a specified address
+    fn get_pub_key(&self, address: Self::AccAddress) -> Result<Self::PubKey, Self::Error>;
+
+    /// Fetch the sequence of an account at a specified address.
+    fn get_sequence(&self, address: Self::AccAddress) -> Result<u64, Self::Error>;
+
+    ///Fetch the next account number, and increment the internal counter.
+    fn new_account_number(&mut self) -> Result<u64, Self::Error>;
+}

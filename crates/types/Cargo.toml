@@ -1,0 +1,20 @@
+[package]
+name = "cosmos-types"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ibc = { workspace = true }
+ibc-proto = { workspace = true, default-features = false, features = ["server"] }
+serde = { workspace = true }
+serde_derive = { workspace = true }
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+safe-regex = { workspace = true }
+derive_more = { workspace = true }
+primitive-types = { workspace = true }
+subtle-encoding = { workspace = true }
+
+[features]

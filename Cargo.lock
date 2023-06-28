@@ -429,6 +429,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "cosmos-types"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "derive_more",
+ "ibc",
+ "ibc-proto",
+ "primitive-types",
+ "safe-regex",
+ "serde",
+ "serde_derive",
+ "subtle-encoding",
+ "thiserror",
+]
+
+[[package]]
 name = "cosmos-x-auth"
 version = "0.1.0"
 dependencies = [
